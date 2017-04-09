@@ -1,0 +1,129 @@
+1.安装版本库
+
+安装完成后，还需要最后一步设置，在命令行输入：
+
+$ git config --global user.name "Your Name"
+$ git config --global user.email "email@example.com"
+
+注意git config命令的--global参数，用了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，
+当然也可以对某个仓库指定不同的用户名和Email地址。
+
+2.创建版本库
+
+第一步：选择一个合适的地方，创建一个空目录：
+
+$ mkdir learngit
+$ cd learngit
+$ pwd
+/Users/michael/learngit
+
+第二步：通过git init命令把这个目录变成Git可以管理的仓库：
+
+$ git init
+Initialized empty Git repository in /Users/michael/learngit/.git/
+
+目录下多了一个.git的目录，这个目录是Git来跟踪管理版本库的，没事千万不要手动修改这个目录里面的文件，不然改乱了，就把Git仓库给破坏了。
+
+第三步：在第一步创建的空目录中创建一个空文档first.txt， 编写文档内容 ；
+
+first content；
+
+用命令git add告诉Git，把文件添加到仓库；
+$ git add first.txt
+
+用命令git commit告诉Git，把文件提交到仓库：
+
+$ git commit -m "add fir file"
+[master (root-commit) cb926e7] wrote a readme file
+ 1 file changed, 2 insertions(+)
+ create mode 100644 readme.txt
+
+commit 可以一次提交多个文件，故可以在commi前add多个文件；
+
+$ git add file1.txt
+$ git add file2.txt file3.txt
+$ git commit -m "add 3 files."
+
+2.版本控制基本操作
+
+2.1 版本回退
+
+工作区：修改frist.txt 文档；
+
+暂存区：$ git add readme.txt 提交修改到暂存区；
+
+版本库：$ git commit -m "append GPL" 提交到版本库；
+
+运行git status命令查看当前修改处在哪个区域
+
+可以使用 git diff file查看修改细节；
+
+git log/git log --pretty=oneline 查看版本详细信息；
+
+第一步：使用git status 查看当前修改状态；
+
+第二步：$ git reset --hard HEAD（为版本指针） 丢弃当前工作区修改，回到当前最新版本；
+
+上一个版本就是HEAD^，上上一个版本就是HEAD^^，当然往上100个版本写100个^比较容易数不过来，所以写成HEAD~100
+
+第三步：可以使用git reset --hard ID（前几位ID号即可） 回退到任意版本；
+
+可以使用git reflog 查看历史命令；
+
+2.2版本库区详解
+
+工作区：文档区；包含 .git隐藏文档，为git的版本库；
+
+版本库中包含暂存区（stage）以及版本修改分支（master），HEAD指针指向版本修改分支，
+
+工作区：直接修改文档，并保存；
+
+暂存区：用git add把文件从工作区添加到暂存区；每个文档都会维护一个版本分支区
+
+版本修改分支区：用git commit -m "版本说明" 把文件从暂存区添加到版本修改分支；
+ 
+2.3管理修改
+
+commit只会提交暂存区的修改到版本库修改分支区，并且可以一次提交多个暂存区修改或文档到版本暂存修改分支，相同的文档修改在
+暂存区中会合并成一次修改；
+
+2.4 撤销修改
+
+在工作区修改后，可以使用git checkout -- file 撤销工作区的修改；
+ 
+撤销修改后，还会在工作区的最新版本；
+
+如果已经把修改git add file 添加到暂存区后，又在工作求修改
+
+使用git checkout -- file 回到暂存区状态；
+
+该命令会使 文件回到最近一次git commit 或git add的状态
+
+还可以使用git reset HEAD file撤销暂存区的的更改，回退到工作区，
+
+再用checkout  -- file回退到最新工作区版本；
+
+checkout 工作区的撤销操作；
+
+reset HEAD file用于把暂存区修改回退到工作区；
+
+reset --hard ID 用于回退到任意版本；
+
+2.5删除文件
+
+正常删除：
+
+在工作区删除文件用 rm file ；
+
+在暂存区中删除文件 git rm file;
+
+提交暂存区删除操作 git commit；
+
+文件从版本库完全中删除；
+
+
+删除文件错误：
+
+已在工作区rm file  可用git checkout -- file 撤销工作区操作
+
+
